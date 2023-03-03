@@ -9,6 +9,7 @@ import send2ChatGPT from "./chatgpt.js";
 const channelId = process.env.CHANNEL_ID;
 const token = process.env.DISCORD_TOKEN;
 const webhookUrl = process.env.WEBHOOK_URL;
+const ignoreId = process.env.IGNORE_ID;
 
 const client = new Client({
   checkUpdate: false,
@@ -23,17 +24,16 @@ client.on("ready", () => {
 });
 
 client.on("messageCreate", async (message) => {
-  if (message.channelId === channelId) {
+  if (message.channelId === channelId && message.author.id !== ignoreId) {
     console.log(
       `${chalk.red("[Message]")} ${message.content}, ${
         message.author.username
       } at ${new Date().toLocaleString()}`
     );
-    if (message.content.startsWith("```") || message.content.endsWith("```")) {
-      return;
+    if (message.content.startsWith("```") && message.content.endsWith("```")) {
+      const response = await send2ChatGPT(message.content);
+      sendMessage(response);
     }
-    const response = await send2ChatGPT(message.content);
-    sendMessage(response);
   }
 });
 
