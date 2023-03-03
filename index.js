@@ -1,11 +1,14 @@
 import { Client } from "discord.js-selfbot-v13";
 import chalk from "chalk";
+import fetch from "node-fetch";
 import dotenv from "dotenv";
-import send2ChatGPT from "./chatgpt.js";
 dotenv.config();
+
+import send2ChatGPT from "./chatgpt.js";
 
 const channelId = process.env.CHANNEL_ID;
 const token = process.env.DISCORD_TOKEN;
+const webhookUrl = process.env.WEBHOOK_URL;
 
 const client = new Client({
   checkUpdate: false,
@@ -35,18 +38,21 @@ client.on("messageCreate", async (message) => {
 });
 
 const sendMessage = async (message) => {
-  return client.channels
-    .fetch(channelId)
-    .then((channel) =>
-      channel
-        .send(`\`\`\`${message}\`\`\``)
-        .then(() =>
-          console.log(
-            `${chalk.green(
-              "[Message]"
-            )} Sent message at ${new Date().toLocaleString()}`
-          )
-        )
+  fetch(webhookUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      content: `\`\`\`${message}\`\`\``,
+    }),
+  })
+    .then(() =>
+      console.log(
+        `${chalk.green(
+          "[Message]"
+        )} Sent message at ${new Date().toLocaleString()}`
+      )
     )
     .catch(console.error);
 };
