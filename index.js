@@ -31,8 +31,16 @@ client.on("messageCreate", async (message) => {
       } at ${new Date().toLocaleString()}`
     );
     if (message.content.startsWith("```") && message.content.endsWith("```")) {
-      const response = await send2ChatGPT(message.content);
-      sendMessage(response);
+      const gptResponse = [];
+      for (let i = 0; i < 3; i++) {
+        gptResponse.push(send2ChatGPT(message.content));
+      }
+      const res = await Promise.all(gptResponse);
+      let msg = "";
+      res.forEach((r, index) => {
+        msg += `選項 ${index + 1}\n\`\`\`${r}\`\`\`\n`;
+      });
+      sendMessage(msg);
     }
   }
 });
@@ -44,7 +52,7 @@ const sendMessage = async (message) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      content: `\`\`\`${message}\`\`\``,
+      content: message,
     }),
   })
     .then(() =>
