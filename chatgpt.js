@@ -85,9 +85,9 @@ const send2ChatGPT = async (message) => {
     body: JSON.stringify(data),
   });
   const json = await response.json();
-  
+
   const choices = json?.choices;
-  if (!result) {
+  if (!choices) {
     return "翻譯失敗，請再試一次";
   }
 
