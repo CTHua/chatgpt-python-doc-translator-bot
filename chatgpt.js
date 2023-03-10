@@ -52,7 +52,8 @@ const premessage = [
   },
 ];
 
-const beforeMessage = "請開始翻譯這段文字，並遵守翻譯守則和括號的使用方式及保留rst格式符號，單行不應超過79字元寬度，超過就換行";
+const beforeMessage =
+  "請開始翻譯這段文字，並遵守翻譯守則和括號的使用方式及保留rst格式符號，單行不應超過79字元寬度，超過就換行";
 const send2ChatGPT = async (message) => {
   const url = "https://api.openai.com/v1/chat/completions";
   const headers = {
@@ -61,7 +62,10 @@ const send2ChatGPT = async (message) => {
   };
   const data = {
     model: "gpt-3.5-turbo",
-    messages: [...premessage, { role: "user", content: `${beforeMessage}\n${message}` }],
+    messages: [
+      ...premessage,
+      { role: "user", content: `${beforeMessage}\n${message}` },
+    ],
   };
   const response = await fetch(url, {
     method: "POST",
@@ -69,11 +73,10 @@ const send2ChatGPT = async (message) => {
     body: JSON.stringify(data),
   });
   const json = await response.json();
-  
+
   const result = json.choices[0]?.message?.content;
 
-  if(!result) 
-  {
+  if (!result) {
     return "翻譯失敗，請再試一次";
   }
   return result;
