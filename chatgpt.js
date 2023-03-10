@@ -69,7 +69,14 @@ const send2ChatGPT = async (message) => {
     body: JSON.stringify(data),
   });
   const json = await response.json();
-  return json.choices[0].message.content;
+  
+  const result = json.choices[0]?.message?.content;
+
+  if(!result) 
+  {
+    return "翻譯失敗，請再試一次";
+  }
+  return result;
 };
 
 export default send2ChatGPT;
