@@ -31,9 +31,10 @@ client.on("messageCreate", async (message) => {
       } at ${new Date().toLocaleString()}`
     );
     if (message.content.startsWith("```") && message.content.endsWith("```")) {
+      const cleanMsg = message.content.slice(3, -3);
       const gptResponse = [];
       for (let i = 0; i < 3; i++) {
-        gptResponse.push(send2ChatGPT(message.content));
+        gptResponse.push(send2ChatGPT(cleanMsg));
       }
       const res = await Promise.all(gptResponse);
       let msg = "";
