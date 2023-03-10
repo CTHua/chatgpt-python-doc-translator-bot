@@ -53,8 +53,8 @@ const premessage = [
   {
     role: "user",
     content: `
-    請參考下列英漢詞彙對應：
-    - type: 型別
+    請遵照以下守則翻譯：
+    遇到 type 時，請翻譯成「型別」，不要翻譯成「類型」。
   `,
   },
   {
