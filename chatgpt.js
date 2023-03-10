@@ -50,6 +50,18 @@ const premessage = [
     content: `
   謝謝提供使用括號的準則，我會遵守這些規範`,
   },
+  {
+    role: "user",
+    content: `
+    請參考下列英漢詞彙對應：
+    - type: 型別
+  `,
+  },
+  {
+    role: "assistant",
+    content: `
+  謝謝提供確切的單詞翻譯規範，我會遵守這些規範`,
+  },
 ];
 
 const beforeMessage =
