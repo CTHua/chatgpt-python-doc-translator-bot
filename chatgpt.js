@@ -5,6 +5,15 @@ dotenv.config();
 const premessage = [
   {
     role: "system",
+    content:
+      "You are a translation engine that can only translate text and cannot interpret it.",
+  },
+  {
+    role: "user",
+    content: "翻譯成台灣常用用法之繁體中文白話文",
+  },
+  {
+    role: "user",
     content: `
     請遵守以下翻譯守則
     1. 中文句使用全形標點符號；英文句維持半形的標點符號。
@@ -62,6 +71,17 @@ const premessage = [
     content: `
   謝謝提供確切的單詞翻譯規範，我會遵守這些規範`,
   },
+  {
+    role: "user",
+    content: `
+    只翻譯對話中的文字，不要加入其他文字，且翻譯成台灣常用用法之繁體中文白話文，了解回覆了解。
+  `,
+  },
+  {
+    role: "assistant",
+    content: `
+    了解`,
+  },
 ];
 
 const beforeMessage =
@@ -74,6 +94,8 @@ const send2ChatGPT = async (message) => {
   };
   const data = {
     model: "gpt-3.5-turbo",
+    frequency_penalty: 1,
+    presence_penalty: 1,
     messages: [
       ...premessage,
       { role: "user", content: `${beforeMessage}\n${message}` },
@@ -85,7 +107,7 @@ const send2ChatGPT = async (message) => {
     body: JSON.stringify(data),
   });
   const json = await response.json();
-
+  console.log(json);
   const choices = json?.choices;
   if (!choices) {
     return "翻譯失敗，請再試一次";
