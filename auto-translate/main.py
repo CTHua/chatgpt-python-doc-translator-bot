@@ -2,11 +2,11 @@ import pandas as pd
 from tqdm import tqdm
 import requests
 import time
-df = pd.read_csv("./data/data.csv")
+df = pd.read_csv("./data/data.csv", encoding="utf-8", quoting=1)
 print(df)
 
 
-for i in tqdm(range(2,len(df))):
+for i in tqdm(range(4,len(df))):
     url = "http://localhost:55688/translate"
     print(df["source"][i])
     payload = {
@@ -20,7 +20,7 @@ for i in tqdm(range(2,len(df))):
     result = response.text.replace('\n', '\\n').replace('"', '\\"')
     df.loc[i,"target"] = result
     df.loc[i,"fuzzy"] = True
-    time.sleep(10)
+    time.sleep(5)
     df.to_csv("./data/result.csv", index=False, encoding="utf-8",quoting=1)
 
 

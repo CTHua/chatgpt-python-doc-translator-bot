@@ -101,13 +101,13 @@ const send2ChatGPT = async (message) => {
       { role: "user", content: `${beforeMessage}\n${message}` },
     ],
   };
-  const response = await fetch(url, {
+  console.log("[ChatGPT] data", message);
+  const json = await fetch(url, {
     method: "POST",
     headers: headers,
     body: JSON.stringify(data),
-  });
-  const json = await response.json();
-  console.log(json);
+  }).then((res) => res.json());
+  console.log("[ChatGPT] json", json);
   const choices = json?.choices;
   if (!choices) {
     return "翻譯失敗，請再試一次";
